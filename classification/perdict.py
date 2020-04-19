@@ -53,6 +53,9 @@ def predictClass(text_test):
     # return idofclass #number
     return '{}-【{}-{}】'.format(text_test,classesname.inverse[idofclass],idofclass)
 
+testfile_f = open('t.txt','a+') 
+
+
 testtext = [
 '你这种情况多属于风湿性性的',
 '采取理疗康复应该可以的',
@@ -65,22 +68,29 @@ testtext = [
 ]
 
 for tt in testtext:
-    print(predictClass(tt))
+    tt_res = predictClass(tt)
+    testfile_f.writelines(tt_res+'\n')
 
 
 testtext=[]
 for n in range(24):
+# for n in range(4):
     with open('t/'+str(n+1)+'.txt',encoding='utf-8') as f:
         for tt in f.readlines():
             testtext.append(tt)
 
-    for tt in testtext:
-        tt_=tt.split('||')
-        role = tt_[0]
-        stext = tt_[1].replace('\n','')
+for tt in testtext:
+    tt_=tt.split('||')
+    role = tt_[0]
+    stext = tt_[1].replace('\n','')
 
-        if '医生' in role:
-            print('医生：{}'.format(predictClass(stext)))
-            
-        else:
-            print('病人：{}'.format(stext))
+    if '医生' in role:
+        # print('医生：{}'.format(predictClass(stext)))
+        d_int = predictClass(stext)
+        testfile_f.writelines(d_int+'\n')
+    else:
+        # print('病人：{}'.format(stext))
+        testfile_f.writelines(stext+'\n')
+
+
+testfile_f.close()
