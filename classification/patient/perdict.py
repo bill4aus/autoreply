@@ -86,11 +86,12 @@ for tt in testtext:
 
     if '医生' in role:
         # print('医生：{}'.format(predictClass(stext)))
-        d_int = predictClass(stext)
-        testfile_f.writelines(d_int+'\n')
+        # d_int = predictClass(stext)
+        testfile_f.writelines(stext+'\n')
     else:
         # print('病人：{}'.format(stext))
-        testfile_f.writelines(stext+'\n')
+        d_int = predictClass(stext)
+        testfile_f.writelines(d_int+'\n')
 
 
 testfile_f.close()
