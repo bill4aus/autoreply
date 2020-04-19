@@ -136,3 +136,5 @@ api/doctor/conversation/
 api/patient/conversation/
 api/doctor/modelconfigsave/
 api/patient/modelconfigsave/
+conversation/corpus/
+conversation/bingli/
