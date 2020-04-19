@@ -69,17 +69,18 @@ for tt in testtext:
 
 
 testtext=[]
-with open('test.txt',encoding='utf-8') as f:
-    for tt in f.readlines():
-        testtext.append(tt)
+for n in range(24):
+    with open('t/'+str(n+1)+'.txt',encoding='utf-8') as f:
+        for tt in f.readlines():
+            testtext.append(tt)
 
-for tt in testtext:
-    tt_=tt.split('||')
-    role = tt_[0]
-    stext = tt_[1].replace('\n','')
+    for tt in testtext:
+        tt_=tt.split('||')
+        role = tt_[0]
+        stext = tt_[1].replace('\n','')
 
-    if '医生' in role:
-        print('医生：{}'.format(predictClass(stext)))
-        
-    else:
-        print('病人：{}'.format(stext))
+        if '医生' in role:
+            print('医生：{}'.format(predictClass(stext)))
+            
+        else:
+            print('病人：{}'.format(stext))
