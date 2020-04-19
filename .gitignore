@@ -128,5 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 __pycache__/
-classification/modelconfigsave/
-classification/segment/
+classification/doctor/modelconfigsave/
+classification/doctor/segment/
+classification/patient/modelconfigsave/
+classification/patient/segment/
