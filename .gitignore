@@ -132,3 +132,7 @@ classification/doctor/modelconfigsave/
 classification/doctor/segment/
 classification/patient/modelconfigsave/
 classification/patient/segment/
+api/doctor/conversation/
+api/patient/conversation/
+api/doctor/modelconfigsave/
+api/patient/modelconfigsave/
