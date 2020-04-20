@@ -74,7 +74,7 @@ testfile_f = open('t.txt','w+')
 
 testtext=[]
 # for n in range(24):
-for n in range(4):
+for n in range(5,10,1):
     with open('t/'+str(n+1)+'.txt',encoding='utf-8') as f:
         for tt in f.readlines():
             testtext.append(tt)
