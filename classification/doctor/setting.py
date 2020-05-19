@@ -56,10 +56,10 @@ categories = bidict(classdict)
 
 
 maxlen = 500 #400
-embedding_dims = 10 #60
-maxFeature = 2200 #10000
+embedding_dims = 60 #60
+maxFeature = 5000 #10000
 test_size = 0.05
-train_epochs = 350
+train_epochs = 300
 class_length = len(categories)
 
 

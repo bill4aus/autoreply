@@ -42,23 +42,11 @@ import pickle
 
 
 # # datasets
-# # trainX,testX,trainY,testY
-# for x1 in datasets.trainX[:5]:
-#     # print(x1)
-#     print(len(x1))
-# # print(len(datasets.trainX))
-# # print(len(datasets.testX))
-# print(datasets.trainX)
-# print(datasets.trainY)
-# print(datasets.trainX.shape)
-# print(len(datasets.trainX[0]))
-# print(len(datasets.trainX[2]))
-# print(datasets.trainX[0])
-# print(datasets.trainX[2])
-
-# for x in datasets.trainY:print(x)
-
-
+print(datasets.trainX.shape)
+print(len(datasets.trainX[0]))
+print(len(datasets.trainX[2]))
+print(datasets.trainX[0])
+print(datasets.trainX[2])
 # exit()
 
 
@@ -125,7 +113,7 @@ history1 = tfModel.fit(datasets.trainX,datasets.trainY,
     epochs=setting.train_epochs,
     # validation_data=[],
     # verbose=1
-    batch_size=100,
+    batch_size=10,
     )
 
 
