@@ -212,7 +212,7 @@ class robot(object):
                         bingliforthisill[patient_id]=new_bingli_dict
 
             self.bingli_id_obj[bingliflodername]=bingliforthisill
-        # print(self.bingli_id_obj)
+        print(self.bingli_id_obj.keys())
 
 
 
@@ -248,21 +248,45 @@ class robot(object):
         # global bingli_id_obj
 
         self.bingli=self.bingli_id_obj[keshiname]
-        print('self.bingli')
-        print(self.bingli)
+        # print('self.bingli')
+        # print(self.bingli)
+        
+
+        # print(self.taolu.keys())
+        print('dintent：')
+        print(dintent)
+
+
+        try:
+            replyintent=self.taolu[dintent].split(',')
+
+            random.shuffle(replyintent)
+            myintent=replyintent[0]
+
+            # 随机选一个默认回复
+            #random words
+            random.shuffle(self.bingli_foreveryone[myintent])    
+            random_uwords=self.bingli_foreveryone[myintent][0]
+            print('随机选的默认回复文本 random_uwords')
+            print(random_uwords)
+            
+        except Exception as e:
+            # raise e
+            # 该病例没有相关的意图
+            print(self.bingli_foreveryone.keys())
+            random_uwords=self.bingli_foreveryone[dintent]
         
 
 
-        replyintent=self.taolu[dintent].split(',')
-        random.shuffle(replyintent)
-        myintent=replyintent[0]
+        # random.shuffle(replyintent)
+        # myintent=replyintent[0]
 
-        # 随机选一个默认回复
-        #random words
-        random.shuffle(self.bingli_foreveryone[myintent])    
-        random_uwords=self.bingli_foreveryone[myintent][0]
-        print('随机选的默认回复文本 random_uwords')
-        print(random_uwords)
+        # # 随机选一个默认回复
+        # #random words
+        # random.shuffle(self.bingli_foreveryone[myintent])    
+        # random_uwords=self.bingli_foreveryone[myintent][0]
+        # print('随机选的默认回复文本 random_uwords')
+        # print(random_uwords)
 
         # random.shuffle(bingli_id_list)
         # myjsonfile=open('bingli/'+bingli_id_list[0]+'.json')

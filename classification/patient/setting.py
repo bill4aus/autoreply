@@ -63,6 +63,6 @@ train_epochs = 300
 class_length = len(categories)
 
 
-tokenizer = Tokenizer(filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~\t\n！，。（）；’‘的我你他好很',split=" ",num_words=maxFeature)  #创建一个Tokenizer对象
+tokenizer = Tokenizer(filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~\t\n！，。（）；’‘',split=" ",num_words=maxFeature)  #创建一个Tokenizer对象
 modelfile = 'D:\dev\Command\datamining\embedding\\word2vec\\word2vec.model'
 corpusfile='segment'
