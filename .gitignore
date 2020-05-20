@@ -138,3 +138,4 @@ api/doctor/modelconfigsave/
 api/patient/modelconfigsave/
 conversation/corpus/
 conversation/bingli/
+chromedriver.exe

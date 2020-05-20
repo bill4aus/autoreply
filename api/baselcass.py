@@ -42,7 +42,7 @@ import pickle
 # load model
 
 
-def build_ishot_model(configpath):
+def build_keras_model(configpath):
     # load model
     tfModel = tf.keras.models.load_model(configpath+"/model.h5")
 
@@ -57,7 +57,7 @@ def build_ishot_model(configpath):
 
 
 def predictClass(text_test):
-    # tfModel,tokenizer,config = build_ishot_model('/modelfile')
+    # tfModel,tokenizer,config = build_keras_model('/modelfile')
     # print(text_test)
     x_test_word_ids = tokenizer.texts_to_sequences([' '.join(jieba.cut(text_test))])
     x_test_padded_seqs = pad_sequences(x_test_word_ids, maxlen=config['maxlen'])
@@ -119,8 +119,8 @@ keshi_list=['xinggongnengzhangai','qianliexianjibing','niaodaoxialie','miniaowai
 #                 # print('jstr')
 #                 newjstr=''.join(jstr.split('\n'))
 #                 # print(newjstr)
-#                 new_bingli_dict = json.loads(newjstr)
-#                 bingliforthisill[patient_id]=new_bingli_dict
+#                 singleone_bingli_dict = json.loads(newjstr)
+#                 bingliforthisill[patient_id]=singleone_bingli_dict
 
 #     bingli_id_obj[bingliflodername]=bingliforthisill
 
@@ -129,12 +129,26 @@ keshi_list=['xinggongnengzhangai','qianliexianjibing','niaodaoxialie','miniaowai
                 # bingli_list.append()
 
 # 获取某个人任意的对话
-def getrandomrespone(new_bingli_dict):
+def getrandomrespone(singleone_bingli_dict):
     saylist=[]
-    for intent in new_bingli_dict:
-        for x in new_bingli_dict.get(intent):
+    for intent in singleone_bingli_dict:
+        for x in singleone_bingli_dict.get(intent):
             saylist.append(x)
     return random.choice(saylist)
+def get_random_intent_respone(bingli,replyintent):
+    random.shuffle(replyintent)
+    chosenintent = replyintent[0]
+    saylist=[]
+
+    for userid in bingli:
+        ubingli = bingli.get(userid)
+        if chosenintent in ubingli:
+            saylist.extend(ubingli.get(chosenintent))
+    robotsay = random.choice(saylist)
+
+    return robotsay,chosenintent
+
+
 
 
 class robot(object):
@@ -153,7 +167,7 @@ class robot(object):
         pass
         modelfile = configfile+'/modelconfigsave/'
         modelfile.replace('//','/')
-        self.tfModel,self.tokenizer,self.config = build_ishot_model(modelfile)
+        self.tfModel,self.tokenizer,self.config = build_keras_model(modelfile)
         self.classesname = self.config['categories']
 
 
@@ -203,13 +217,21 @@ class robot(object):
 
                         patient_id=os.path.splitext(nfile)[0]
 
-                        myjsonfile=open(datapath+bingliflodername+'/'+patient_id+'.json',encoding='utf-8')
-                        jstr=myjsonfile.read()
-                        # print('jstr')
-                        newjstr=''.join(jstr.split('\n'))
-                        # print(newjstr)
-                        new_bingli_dict = json.loads(newjstr)
-                        bingliforthisill[patient_id]=new_bingli_dict
+                        try:
+                            pass
+                            myjsonfile=open(datapath+bingliflodername+'/'+patient_id+'.json',encoding='utf-8')
+                            jstr=myjsonfile.read()
+                            # print('jstr')
+                            newjstr=''.join(jstr.split('\n'))
+                            # print(newjstr)
+                            singleone_bingli_dict = json.loads(newjstr)
+                            bingliforthisill[patient_id]=singleone_bingli_dict
+
+                        except Exception as e:
+                            # raise e
+                            pass
+
+                       
 
             self.bingli_id_obj[bingliflodername]=bingliforthisill
         print(self.bingli_id_obj.keys())
@@ -218,7 +240,7 @@ class robot(object):
 
     def perdict(self,text_test):
 
-        # tfModel,tokenizer,config = build_ishot_model('/modelfile')
+        # tfModel,tokenizer,config = build_keras_model('/modelfile')
         # print(text_test)
         x_test_word_ids = self.tokenizer.texts_to_sequences([' '.join(jieba.cut(text_test))])
         x_test_padded_seqs = pad_sequences(x_test_word_ids, maxlen=self.config['maxlen'])
@@ -240,134 +262,157 @@ class robot(object):
         pass
     # def bingli(self):
     #     pass
+
+    def random_users_bingli(self,keshiname,robotintent):
+
+        self.bingli=self.bingli_id_obj[keshiname]
+        binglilist = []
+        for userid in self.bingli:
+            ubingli = self.bingli.get(userid)
+            if ubingli.get(robotintent)!=None:
+                if len(ubingli.get(robotintent))>0:
+                    binglilist.append(ubingli)
+
+        # #现在，换一个方法。随机找一个用户，取出该用户的，该意图的回复用于返回
+        # this_bingli_list=list(self.bingli.keys())
+        # # print(this_bingli_list)
+        # random.shuffle(this_bingli_list)
+        # singleone_bingli_dict=self.bingli.get(this_bingli_list[0])
+        # # print(singleone_bingli_dict)
+
+        try:
+            random.shuffle(binglilist)
+            singleone_bingli_dict = binglilist[0]
+            return singleone_bingli_dict
+
+        except Exception as e:
+            # raise e
+            return None
+
+
+    def random_user_intent(self,replyintent):
+        # avilabe_intent=[]
+        # for intentstr in singleone_bingli_dict:
+        #     if singleone_bingli_dict.get(intentstr) :
+        #         if len(singleone_bingli_dict.get(intentstr))!=0:
+        #             avilabe_intent.append(intentstr)
+        # # logging.info(u'----------------可用的意图avilabe_intent---------')   
+        # # print(avilabe_intent)
+
+        # thisintent=None
+
+        # for mintent in replyintent:
+        #     if mintent in avilabe_intent:
+        #         # if robotintent=='打招呼':
+        #         #     break
+        #         # else:
+        #         #     robotintent=mintent
+        #         #     logging.info(u'----------------找到一个可用的意图---------') 
+        #         #     # print(robotintent)
+        #         #     break
+        #         thisintent = mintent
+
+
+
+        # # print('最终的意图选择 robotintent')
+        # # print(robotintent)
+
+        # # print('新病例中的该意图文本uwordslist')
+        # # uwordslist=singleone_bingli_dict.get(robotintent)
+
+        # return thisintent
+        
+        random.shuffle(replyintent)
+        return replyintent[0]
+
     #    ###回复套路，选择套路的回复语
-    def taolurespone(self,dintent,keshiname=''):
+    def taolurespone(self,otherintent,keshiname=''):
         pass
         # global taolu
         # global bingli_foreveryone
         # global bingli_id_obj
 
-        self.bingli=self.bingli_id_obj[keshiname]
+        
         # print('self.bingli')
         # print(self.bingli)
         
 
         # print(self.taolu.keys())
-        print('dintent：')
-        print(dintent)
+        # print('otherintent:')
+        # print(otherintent)
 
 
-        try:
-            replyintent=self.taolu[dintent].split(',')
-
-            random.shuffle(replyintent)
-            myintent=replyintent[0]
-
-            # 随机选一个默认回复
-            #random words
-            random.shuffle(self.bingli_foreveryone[myintent])    
-            random_uwords=self.bingli_foreveryone[myintent][0]
-            print('随机选的默认回复文本 random_uwords')
-            print(random_uwords)
-            
-        except Exception as e:
-            # raise e
-            # 该病例没有相关的意图
-            print(self.bingli_foreveryone.keys())
-            random_uwords=self.bingli_foreveryone[dintent]
-        
-
+        replyintent=self.taolu[otherintent].split(',')
 
         # random.shuffle(replyintent)
-        # myintent=replyintent[0]
+        # robotintent=replyintent[0]
 
-        # # 随机选一个默认回复
-        # #random words
-        # random.shuffle(self.bingli_foreveryone[myintent])    
-        # random_uwords=self.bingli_foreveryone[myintent][0]
-        # print('随机选的默认回复文本 random_uwords')
-        # print(random_uwords)
+        robotintent=self.random_user_intent(replyintent)
+        singleone_bingli_dict=self.random_users_bingli(keshiname,robotintent)
+        if singleone_bingli_dict !=None:
+            print('病例中可以回复的意图:{}'.format(robotintent))
+            # print('新病例中的该意图文本uwordslist')
+            uwordslist=singleone_bingli_dict.get(robotintent)
+        else:
+     
+            '''
+            # 该病例没有相关的意图
+            # 随机选一个默认回复
 
-        # random.shuffle(bingli_id_list)
-        # myjsonfile=open('bingli/'+bingli_id_list[0]+'.json')
-        # jstr=myjsonfile.read()
-        # print('jstr')
-        # newjstr=''.join(jstr.split('\n'))
-        # print(newjstr)
-        # new_bingli_dict = json.loads(newjstr)
+            #如果该病人没有此意图，则随机找个该默认设置中，该意图的对话
+            # 也不太好
+            # 换成： 该病例中其他意图的对话 如果再没有，则为默认对话
+        
+            # 随机选一个默认回复
+            # 默认是皮肤科的对话，不妥
+            # 默认改为中性对话了
 
+            print(self.bingli_foreveryone.keys())
+            # random_uwords=self.bingli_foreveryone[otherintent]
+            '''
+        
 
-        #现在，换一个方法。随机找一个用户，取出该用户的，该意图的回复用于返回
-        this_bingli_list=list(self.bingli.keys())
-        print(this_bingli_list)
+            uwordslist =None
 
-        random.shuffle(this_bingli_list)
-        new_bingli_dict=self.bingli.get(this_bingli_list[0])
-        print(new_bingli_dict)
+            random.shuffle(replyintent)
+            robotintent=replyintent[0]
+            #random words
+            print(self.bingli_foreveryone.keys())
+            random.shuffle(self.bingli_foreveryone[robotintent])    
+            random_uwords=self.bingli_foreveryone[robotintent][0]
+            print('病例没找到，随机选意图：{}，文本：{}'.format(robotintent,random_uwords))
+        
+      
 
-        avilabe_intent=[]
-        for intentstr in new_bingli_dict:
-            if new_bingli_dict.get(intentstr) :
-                if len(new_bingli_dict.get(intentstr))!=0:
-                    avilabe_intent.append(intentstr)
-        logging.info(u'----------------可用的意图avilabe_intent---------')   
-        print(avilabe_intent)
+        
+        # if uwordslist==None:
+        #     try:
+        #         robotwords,robotintent = get_random_intent_respone(self.bingli,replyintent)
+        #         print('机器人的意图：{}，文本：{}'.format(robotintent,robotwords))
+        #     except Exception as e:
+        #         print('默认病例的回复uwords')
+        #         robotwords=random_uwords
+        # elif len(uwordslist)==0:
+        #     try:
+        #         robotwords,robotintent = get_random_intent_respone(self.bingli,replyintent)
+        #         print('机器人的意图：{}，文本：{}'.format(robotintent,robotwords))
+        #     except Exception as e:
+        #         print('默认病例的回复uwords')
+        #         robotwords=random_uwords
+        
 
-        for mintent in replyintent:
-            if mintent in avilabe_intent:
-                if myintent=='打招呼':
-                    break
-                else:
-                    myintent=mintent
-                    logging.info(u'----------------找到一个可用的意图---------') 
-                    # print(myintent)
-                    break
-
-        print('最终的意图选择 myintent')
-        print(myintent)
-
-        print('新病例中的该意图文本uwordslist')
-        uwordslist=new_bingli_dict.get(myintent)
-
-        #如果该病人没有此意图，则随机找个该默认设置中，该意图的对话
-        # 也不太好
-        # 换成： 该病例中其他意图的对话 如果再没有，则为默认对话
         if uwordslist==None:
-            # 默认是皮肤科的对话，不妥
-            # 默认改为中性对话了
-            
-            print('病例任意回复')
-            try:
-                uwords=getrandomrespone(new_bingli_dict)
-            except Exception as e:
-                # raise e
-                print('默认病例的回复uwords')
-                uwords=random_uwords
-
-            
-            # uwords=''
-        elif len(uwordslist)==0:
-            # 默认是皮肤科的对话，不妥
-            # 默认改为中性对话了
-            print('病例任意回复')
-            try:
-                uwords=getrandomrespone(new_bingli_dict)
-            except Exception as e:
-                # raise e
-                print('默认病例的回复uwords')
-                uwords=random_uwords
+            robotwords=random_uwords
         else:
             random.shuffle(uwordslist)
-            print('新病例的回复uwords')
-            
             if len(uwordslist)>0:
-                uwords=uwordslist[0]
+                robotwords=uwordslist[0]
             else:
-                uwords=random_uwords
-            print(uwords)
+                robotwords=random_uwords
+        print('最终敲定意图：{}，文本：{}'.format(robotintent,robotwords))
         # 病人说的||医生意图||病人意图
         # return random.choice(i['responses'])+"||"+i['tag']
-        return uwords+"||"+dintent+"||"+myintent
+        return robotwords+"||"+otherintent+"||"+robotintent
 
 
 
@@ -378,7 +423,7 @@ class robot(object):
         # results = classify.classify(sentence)
         # 
         
-        doctorintent = self.perdict(newdoc)
+        otherintent = self.perdict(newdoc)
 
 
         # 
@@ -386,17 +431,17 @@ class robot(object):
         # if results:
         # doctorintent=results[0][0]
         # 
-        if show_details: print ('results:', doctorintent)
+        if show_details: print ('otherintent:', otherintent)
 
         
 
         if self.intentonly==True:
-            return doctorintent
+            return otherintent
         else:
             pass
             # 病人说的||医生意图||病人意图
             # return taolurespone(doctorintent,keshiname=keshiname)
-            return self.taolurespone(doctorintent,keshiname=keshiname)
+            return self.taolurespone(otherintent,keshiname=keshiname)
         
 
         # # loop as long as there are matches to process

@@ -13,7 +13,7 @@ import io
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 import urllib
-import urllib2
+# import urllib2
 import threading
 import json
 import random
@@ -22,8 +22,8 @@ import codecs
 
 from selenium.webdriver.common.keys import Keys  
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 import requests
 
@@ -35,7 +35,7 @@ with codecs.open('bingli.json',encoding='utf-8') as json_data:
 
 
 fname=random.uniform(1, 10000000000)
-f=open('hist/'+str(fname)+'.txt','a')
+f=open('hist/'+str(fname)+'.txt','a',encoding='utf-8')
 
 
 
@@ -88,9 +88,9 @@ logging.basicConfig(level=logging.INFO)
 # 这是那个深圳军科的对手
 # openurlstring='http://pft.zoosnet.net/LR/Chatpre.aspx?id=PFT49473838&cid=1502245020998669688687&lng=cn&sid=1502245020998669688687&p=http%3A//m.0755gov.com/&rf1=&rf2=&msg=&e=JSdbl-swt&d=1502245038653'
 
-openurlstring='http://vipw4-szak3.kuaishang.cn/bs/im.htm?cas=57684___621003&fi=68370&e=bdzjtc&p=bdzjtc&ref=http%3A%2F%2Fpfb.fukang-pfk.com%2F&dp=http%3A%2F%2Fpfb.fukang-pfk.com%2F'
+# openurlstring='http://vipw4-szak3.kuaishang.cn/bs/im.htm?cas=57684___621003&fi=68370&e=bdzjtc&p=bdzjtc&ref=http%3A%2F%2Fpfb.fukang-pfk.com%2F&dp=http%3A%2F%2Fpfb.fukang-pfk.com%2F'
 
-
+openurlstring = 'https://aiak8.kuaishang.cn/bs/im.htm?cSource=1&cas=29881___753511&fi=33908&ri=1050439501&vi=5e5e6a314a1f41c19186a015484c2a9d&dp=https%3A%2F%2Fnk.82866666.com%2F&_d=1589972946622&cSourceTitle=%E6%88%90%E9%83%BD%E7%94%B7%E7%A7%91%E5%8C%BB%E9%99%A2%E6%AF%94%E8%BE%83%E5%A5%BD_%E6%AD%A3%E8%A7%84%E7%94%B7%E6%80%A7%E4%B8%93%E7%A7%91%E9%82%A3%E4%B8%AA%E5%A5%BD_%E6%88%90%E9%83%BD%E6%9B%99%E5%85%89%E5%8C%BB%E9%99%A2&_tk=70402047'
 #全局变量
 #状态变量
 lastsay={}
@@ -138,7 +138,7 @@ def getelement(source,selector):
 			elem=source.find_element_by_css_selector(selector)
 			# elem=source.find_elements_by_css_selector(selector)
 			return elem
-	except Exception, e:
+	except Exception as e:
 		return None
 
 
@@ -158,7 +158,7 @@ def getelements(source,selector):
 			# print(selector)
 			# elem=source.find_elements_by_css_selector(selector)
 			return elem
-	except Exception, e:
+	except Exception as e:
 		return []
 
 
@@ -174,7 +174,7 @@ def getelements(source,selector):
 # 			time.sleep(10)
 # 			print u'等待登陆...'
 # 			waitforlogin()
-# 	except Exception, e:
+# 	except Exception as e:
 # 		# raise e
 # 		pass
 # 		waitforlogin()
@@ -184,7 +184,7 @@ def getelements(source,selector):
 # 	global browser
 # 	try:
 # 		waitforlogin()
-# 	except Exception, e:
+# 	except Exception as e:
 # 		# raise e
 # 		print 'error:'
 # 		waitforlogin()
@@ -272,7 +272,7 @@ def get_median(data):
 # 			count+=1
 # 		#每循环一次列表，清空一次游客发言列表
 
-# 	except Exception, e:
+# 	except Exception as e:
 # 		# raise e
 # 		logging.info(str(e))
 
@@ -330,12 +330,12 @@ def extract_person_message(name,is_already_clicked):
 		# groupcode_present=ginfojson['username']
 		# logging.info(u' 当前群组代码 : '+groupcode_present)
 
-		if not lastsay.has_key(name):
+		if  name not in  lastsay:
 			lastsay[name]=u'测试'
-			print 'not have key'
-			print lastsay[name]
+			print ('not have key')
+			print (lastsay[name])
 
-		if not isayto.has_key(name):
+		if name not in  isayto:
 			isayto[name]=u'测试'
 
 		# now_name=browser.find_element_by_css_selector('#chatArea .box_hd .title_wrap .title a').text
@@ -377,7 +377,7 @@ def extract_person_message(name,is_already_clicked):
 			# try:
 			# 	# usersay= ele.find_element_by_css_selector('table .msg').text
 			# 	usersay= ele.find_element_by_css_selector('.msg').text
-			# except Exception, e:
+			# except Exception as e:
 			# 	# raise e
 			# 	usersay= ele.find_element_by_css_selector('.arrow_box_left .text').text
 			
@@ -390,7 +390,7 @@ def extract_person_message(name,is_already_clicked):
 			# print '\n'
 			# print '\n'
 
-			sayarray.append({'nickname':nickname,'usersay':usersay})
+			sayarray.append({'nickname':nickname,'usersay':str(usersay)})
 		# debug info
 		time.sleep(0.2)
 		if len(sayarray)>0:
@@ -414,7 +414,7 @@ def extract_person_message(name,is_already_clicked):
 			ssay=usersayobj['usersay'].replace(' ','')
 			# print lastsay[name]
 			# print (sayarray[-1]['nickname']+sayarray[-1]['usersay'])
-			print lastsay[name]==ssay
+			print (lastsay[name]==ssay)
 			if lastsay[name]==ssay:
 				pass
 			else:
@@ -451,17 +451,20 @@ def extract_person_message(name,is_already_clicked):
 
 			f.write('医生||'+ssay+'\n')
 
-			#中文机器人  自有
-			# urll ='http://127.0.0.1:9001/?word='+urllib.quote(ssay.encode('utf8'))+'&group='+urllib.quote(name.encode('utf8'))+'&username='+urllib.quote(nname.encode('utf8'))
-			urll ='http://127.0.0.1:9003/?word='+urllib.quote(ssay.encode('utf8'))+'&group='+urllib.quote(name.encode('utf8'))+'&username='+urllib.quote(nname.encode('utf8'))
-			reqq = urllib2.Request(urll)
-			res_dataa = urllib2.urlopen(reqq)
-			ress = res_dataa.read()
+			# #中文机器人  自有
+			# # urll ='http://127.0.0.1:9001/?word='+urllib.quote(ssay.encode('utf8'))+'&group='+urllib.quote(name.encode('utf8'))+'&username='+urllib.quote(nname.encode('utf8'))
+			# urll ='http://127.0.0.1:9003/?word='+urllib.quote(ssay.encode('utf8'))+'&group='+urllib.quote(name.encode('utf8'))+'&username='+urllib.quote(nname.encode('utf8'))
+			# reqq = urllib2.Request(urll)
+			# res_dataa = urllib2.urlopen(reqq)
+			# ress = res_dataa.read()
+
+			urll ='http://127.0.0.1:9003/'
+			ress = requests.get(url=urll,params={'role':'patient','word':ssay,'keshi':'xinggongnengzhangai'}).text
 
 			time.sleep(0.1)
 			# print ress
 			if ress == 'stop to say||stop to say':
-				print 'stop to say'
+				print ('stop to say')
 				pass
 			else:
 				logging.info('robot will respond with : '+ress.encode('gbk'))
@@ -543,13 +546,13 @@ def extract_person_message(name,is_already_clicked):
 
 
 					# print ress.encode('gbk')
-				except Exception, e:
+				except Exception as e:
 					# raise e
 					print(str(e))
 					pass
 		ress=''#清空上次回答内容
 		logging.info(u'----------------结束处理这次循环的消息---------')	
-	except Exception, e:
+	except Exception as e:
 		# raise e
 		logging.info(str(e))
 		pass
@@ -708,7 +711,7 @@ def send_massage(name,is_already_clicked,msgstring):
 				pass
 
 
-	except Exception, e:
+	except Exception as e:
 		# browser.quit()
 		# raise e
 		#出错就要跳过，不然卡在一个url_id上
@@ -731,7 +734,7 @@ def changeipVIP(ctname):
 		res_data = urllib2.urlopen(req)
 		res = res_data.read()
 		ip_proxy=res
-	except Exception, e:
+	except Exception as e:
 		
 		ip_proxy=''
 		pass
@@ -761,7 +764,7 @@ def changeip(ctname):
 		res_data = urllib2.urlopen(req)
 		res = res_data.read()
 		ip_proxy=res
-	except Exception, e:
+	except Exception as e:
 		
 		ip_proxy=''
 		pass
@@ -799,13 +802,10 @@ chome_options.add_experimental_option("prefs",prefs)
 # if ismobile:
 # 	chome_options.add_argument('user-agent="Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36"')
 
-cityname=''
-ip_proxy=changeip(cityname)
-# ip_proxy=''
-# ip_proxy='1.82.216.135:80'
-# ip_proxy='58.59.68.91:9797'
+# cityname=''
+# ip_proxy=changeip(cityname)
 
-chome_options.add_argument(('--proxy-server=http://' + ip_proxy))  
+# chome_options.add_argument(('--proxy-server=http://' + ip_proxy))  
 browser = webdriver.Chrome(chrome_options=chome_options)  
 
 
@@ -820,7 +820,7 @@ try:
 	# browser = webdriver.Chrome(desired_capabilities=capabilities)
 	browser.get(openurlstring)
 	time.sleep(10)
-except Exception, e:
+except Exception as e:
 	pass
 	f.close()
 	browser.quit()
@@ -850,7 +850,7 @@ try:
 	# titleelm=browser.find_element_by_css_selector('#kw')
 	titleelm=browser.find_element_by_css_selector('iframe')
 	print(titleelm)
-except Exception, e:
+except Exception as e:
 	# raise e
 	print(str(e))
 	print('browser.quit() cant find .chat_item')
@@ -939,58 +939,56 @@ except Exception, e:
 
 
 
-# .code_box .code_tit
+# # .code_box .code_tit
 
-coderobot=browser.find_elements_by_css_selector('.oc_comm_win_verify')
-if len(coderobot)>0:
-	print 'robot'
-	print 'robot'
-	print 'robot'
-	print 'robot'
-	pass
-	f.close()
-	browser.quit()
-	exit()
-	# 验证码模块
-	browser.save_screenshot('web.jpg')
-	imgelement=browser.find_element_by_css_selector('.oc_comm_win_verify_n img')
-	location = imgelement.location  #获取验证码x,y轴坐标
-	size=imgelement.size  #获取验证码的长宽
-	rangle=(int(location['x']),int(location['y']),int(location['x']+size['width']),int(location['y']+size['height'])) #写成我们需要截取的位置坐标
+# coderobot=browser.find_elements_by_css_selector('.oc_comm_win_verify')
+# if len(coderobot)>0:
+# 	print ('robot')
+	
+# 	pass
+# 	f.close()
+# 	browser.quit()
+# 	exit()
+# 	# 验证码模块
+# 	browser.save_screenshot('web.jpg')
+# 	imgelement=browser.find_element_by_css_selector('.oc_comm_win_verify_n img')
+# 	location = imgelement.location  #获取验证码x,y轴坐标
+# 	size=imgelement.size  #获取验证码的长宽
+# 	rangle=(int(location['x']),int(location['y']),int(location['x']+size['width']),int(location['y']+size['height'])) #写成我们需要截取的位置坐标
 
-	i=Image.open("web.jpg") #打开截图
-	frame4=i.crop(rangle)  #使用Image的crop函数，从截图中再次截取我们需要的区域
-	frame4.save('code.jpg')
+# 	i=Image.open("web.jpg") #打开截图
+# 	frame4=i.crop(rangle)  #使用Image的crop函数，从截图中再次截取我们需要的区域
+# 	frame4.save('code.jpg')
 
 
-	# qq=Image.open('code.jpg')
-	# text=pytesseract.image_to_string(qq).strip() #使用image_to_string识别验证码
-	# print 'code:'
-	# print text
+# 	# qq=Image.open('code.jpg')
+# 	# text=pytesseract.image_to_string(qq).strip() #使用image_to_string识别验证码
+# 	# print 'code:'
+# 	# print text
 
-	# 一键识别函数，无需调用 YDM_SetAppInfo 和 YDM_Login，适合脚本调用
-	captchaId = YDMApi.YDM_EasyDecodeByPath(username, password, appId, appKey, filename, codetype, timeout, result)
-	result=str(result)
-	print result
-	result=result.replace('c_char_p','')
-	result=result.replace('(','')
-	result=result.replace(')','')
-	result=result.replace('\'','')
+# 	# 一键识别函数，无需调用 YDM_SetAppInfo 和 YDM_Login，适合脚本调用
+# 	captchaId = YDMApi.YDM_EasyDecodeByPath(username, password, appId, appKey, filename, codetype, timeout, result)
+# 	result=str(result)
+# 	print (result)
+# 	result=result.replace('c_char_p','')
+# 	result=result.replace('(','')
+# 	result=result.replace(')','')
+# 	result=result.replace('\'','')
 
-	codestr=result
-	print codestr
+# 	codestr=result
+# 	print (codestr)
 
-	# codestr=dmt.decode('code.jpg',200) #上传打码
+# 	# codestr=dmt.decode('code.jpg',200) #上传打码
 
-	# 除非试了很多次不行才换代理
-	# 关闭chrome 重新换IP代理
-	# closebrowser()
+# 	# 除非试了很多次不行才换代理
+# 	# 关闭chrome 重新换IP代理
+# 	# closebrowser()
 
-	time.sleep(0.5)
-	browser.find_element_by_css_selector('#ksVerifyInput').send_keys(codestr.encode('utf-8'))
-	time.sleep(0.5)
-	browser.find_element_by_css_selector('#ksVerifyInput').send_keys(Keys.ENTER)
-	time.sleep(0.5)
+# 	time.sleep(0.5)
+# 	browser.find_element_by_css_selector('#ksVerifyInput').send_keys(codestr.encode('utf-8'))
+# 	time.sleep(0.5)
+# 	browser.find_element_by_css_selector('#ksVerifyInput').send_keys(Keys.ENTER)
+# 	time.sleep(0.5)
 
 
 
