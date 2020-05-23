@@ -20,11 +20,18 @@ import time
 # 	facelist = ['dianzan','tiaopi','weixiao','daxiao','kaixin','weisuo','hua','ku']
 # 	return face_dict,facelist
 
+
+refferurl = "https://www.baidu.com/s?ie=utf-8&f=3&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E7%94%B7%E7%A7%91&fenlei=256&oq=%25E7%2594%25B7%25E7%25A7%2591&rsv_pq=9c21b5200003eca7&rsv_t=a9517qIjZoZkvrDBI0xxeCTZY7yTzt2GO%2B88TGGGDOqPvnRbFInVHHpXEq0&rqlang=cn&rsv_enter=0&rsv_dl=ts_0&rsv_btype=t&prefixsug=%25E7%2594%25B7%25E7%25A7%2591&rsp=0&rsv_sug=1"
+
+
 botchrome = browserBot.chrome()
-url="http://kqi.zoossoft.com/LR/freetel.aspx?siteid=KQI10880110&oname=%e5%80%bc%e7%8f%ad-%e8%ae%b8%e5%8a%a9%e7%90%86"
+# url="http://kqi.zoossoft.com/LR/freetel.aspx?siteid=KQI10880110&oname=%e5%80%bc%e7%8f%ad-%e8%ae%b8%e5%8a%a9%e7%90%86"
+# url="http://kefu8.kuaishang.com.cn/bs/im/33908/29881/753511/sText_%E4%BC%98%E5%8C%96%E7%82%B9%E5%87%BB.htm"
+url="https://ada.baidu.com/site/qianhu.wejianzhan.com/xyl?imid=8aa44b4ceda14518603c8535b1de40a6&utm_source=baidu_wc3&utm_medium=cpc&utm_term=%E7%94%B7%E7%A7%91%E5%8C%BB%E9%99%A2&utm_content=%E7%94%B7%E7%A7%91&utm_campaign=A_B02_%E7%94%B7%E7%A7%91_%E5%8C%BB%E9%99%A2_%E5%AF%B9%E8%AF%9D%5B-nk%5D&key=nankeyiyuan&e_adposition=cl4&e_keywordid=165598555817&bd_vid=nH6sPHcLPWfYnWR3Pj0kn1TYrjwxnWcdg1wxnH0s#back1590229671057"
 	
 # 登陆
-botchrome.open(url,waittime=1)
+# botchrome.open(url,waittime=1)
+botchrome.openwithsource(url,refferurl,waittime=15)
 botchrome.save_cookie('./cookie.broswer')
 
 # corpus = bot.dataload_by_line('./corpus.txt')
@@ -54,6 +61,20 @@ laragetime=0
 keshi = 'xinggongnengzhangai'
 mybot=mymodel.robot(keshi,"userid")
 # wechatid_for_play=genewechatid()
+
+
+# 'kuaishangtong'/'zoosoft' 目前两种
+talktype = 'baidu'
+
+if talktype=='zoosoft':
+	msg_extractor=mymodel.msgextractor_for_zoosoft(botchrome)
+elif talktype=='kuaishangtong':
+	msg_extractor=mymodel.msgextractor_for_kuaishangtong(botchrome)
+elif talktype=='baidu':
+	msg_extractor=mymodel.msgextractor_for_baidu(botchrome)
+	
+
+
 
 #while 循环
 while True:
@@ -101,7 +122,7 @@ while True:
 	# 获取消息
 	#get message
 	# messenger=self.browser.getmessage()
-	msg_extractor=mymodel.msgextractor_for_zoosoft(botchrome)
+
 	messenger = myfunction.getmessage(msg_extractor)
 
 	print('messenger.new:')
@@ -168,7 +189,9 @@ while True:
 				myfunction.send(botchrome,random.choice(slist))
 				botchrome.quit()
 
-			# myfunction.send(botchrome,iamtosaystring)
+			myfunction.send(botchrome,iamtosaystring,which=talktype)
+
+
 
 			# if myintent=='不方便过来':
 			#	 slist=['那你加我微信吧 '+wechatid_for_play,'我微信号是'+wechatid_for_play,'我不一定有时间，先加我吧 '+wechatid_for_play]
@@ -177,4 +200,4 @@ while True:
 	else:
 		pass
 		# noting happened
-	time.sleep(1)
+	time.sleep(3)

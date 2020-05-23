@@ -377,7 +377,7 @@ class robot(object):
             random.shuffle(replyintent)
             robotintent=replyintent[0]
             #random words
-            print(self.bingli_foreveryone.keys())
+            # print(self.bingli_foreveryone.keys())
             random.shuffle(self.bingli_foreveryone[robotintent])    
             random_uwords=self.bingli_foreveryone[robotintent][0]
             print('病例没找到，随机选意图：{}，文本：{}'.format(robotintent,random_uwords))
@@ -409,6 +409,13 @@ class robot(object):
                 robotwords=uwordslist[0]
             else:
                 robotwords=random_uwords
+
+        #如果是打招呼，需要强制覆盖一下，误差太大
+        if robotintent=='打招呼':
+            sayhello = self.bingli_foreveryone['打招呼']
+            random.shuffle(sayhello)   
+            robotwords = sayhello[0] 
+
         print('最终敲定意图：{}，文本：{}'.format(robotintent,robotwords))
         # 病人说的||医生意图||病人意图
         # return random.choice(i['responses'])+"||"+i['tag']

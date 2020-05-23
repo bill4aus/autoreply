@@ -2,6 +2,9 @@
 #coding:utf-8
 # -*- coding: utf-8 -*-
 import mymodel
+import time
+from selenium.webdriver.common.keys import Keys	
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 def getmessage(msg_extractor):
@@ -10,7 +13,15 @@ def getmessage(msg_extractor):
 	return msg_extractor.get()
 
 
-def send(botchrome,message):
+def send(botchrome,message,which='zoosoft'):
+	if which=='zoosoft':
+		send_zoosoft(botchrome,message)
+	elif which=='kuaishangtong':
+		send_kuaishangtong(botchrome,message)
+	elif which=='baidu':
+		send_baidu(botchrome,message)
+
+def send_zoosoft(botchrome,message):
 
 
 	def pc(message):
@@ -233,3 +244,268 @@ def send(botchrome,message):
 	# except Exception as e:
 	# 	raise e
 	# 	pass
+
+
+
+def send_baidu(botchrome,message):
+
+	def sendtry(botchrome,message):
+		# 测试
+		# imlp-component-typebox-send-btn pc-imlp-component-typebox-send 
+		# imlp-component-typebox-send-btn pc-imlp-component-typebox-send pc-imlp-component-typebox-send--disable
+		# try:
+		# 	set_wyswyg_js = '$(".pc-imlp-component-typebox .pc-imlp-component-typebox-container .imlp-component-typebox-input").innerText="%s";' %(message)
+		# 	botchrome.javascript(set_wyswyg_js)
+		# except Exception as e:
+		# 	print('发送失败')
+		# 	print(str(e))
+		# time.sleep(1)
+		# try:
+		# 	set_wyswyg_js = 'onlineChatIns.sendMsg();'
+		# 	botchrome.javascript(set_wyswyg_js)
+		# except Exception as e:
+		# 	print('发送失败')
+		# 	print(str(e))
+
+		#
+
+
+		actions = ActionChains(botchrome.browser)
+		try:
+			inputiframe = botchrome.browser.find_element_by_css_selector('.pc-imlp-component-typebox .pc-imlp-component-typebox-container .imlp-component-typebox-input ')
+			actions.click(inputiframe)
+			actions.perform()
+			
+			
+		except Exception as e:
+			raise e
+			pass
+		try:
+			inputiframe.clear()
+		except Exception as e:
+			# raise e
+			pass
+		try:
+			inputiframe.send_keys(message)
+		except Exception as e:
+			# raise e
+			pass
+		try:
+			botchrome.sendkey(Keys.ENTER)
+		except Exception as e:
+			print('发送失败')
+			print(str(e))
+		
+
+	time.sleep(0.5)
+	sendtry(botchrome,message)
+'''
+ksOnlineChat
+reConnDialog();
+sendMsgAndConn()
+sendMsg()
+'''
+
+def send_kuaishangtong(botchrome,message):
+	# print("send")
+	# print(message)
+	#不能打字太快
+
+	def sendtry(botchrome,message):
+		# 测试
+		
+		
+
+		try:
+			set_wyswyg_js = 'ksEditInstance.innerText="%s";onlineChatIns.sendMsg();' %(message)
+			botchrome.javascript(set_wyswyg_js)
+		except Exception as e:
+			print('发送失败')
+			print(str(e))
+		time.sleep(1)
+		try:
+			set_wyswyg_js = 'onlineChatIns.sendMsg();'
+			botchrome.javascript(set_wyswyg_js)
+		except Exception as e:
+			print('发送失败')
+			print(str(e))
+		
+
+
+		
+
+		# 	# 保存文本数据
+		# 	# f.write('病人||'+uwords+'\n')
+		# try:
+		# 	edlist=botchrome.browser.find_elements_by_css_selector('#ksEditInstance')
+
+		# 	if len(edlist)>0:
+
+		# 		botchrome.browser.find_element_by_css_selector('#ksEditInstance').send_keys(message)
+		# 		time.sleep(1)
+		# 		botchrome.browser.find_element_by_css_selector('#ksEditInstance').send_keys(Keys.ENTER)
+		# 		pass
+		# except Exception as e:
+		# 	raise e
+		# 	pass
+		# finally:
+		# 	pass
+			
+		# 正式
+
+		
+		# try:
+			
+
+		# 	framebodylist=self.browser.getelementsbycss('iframe body')
+		# 	print('framebodylist')
+		# 	print(framebodylist)
+
+
+		# 	framelist=self.browser.getelementsbycss('iframe')
+		# 	print('len(framelist)')
+		# 	print(len(framelist))
+		# 	iframelen=len(framelist)
+
+		# 	iframeeditor=None
+		# 	textclassfind=u'ext'
+		# 	textclasshidden=u'idden'
+
+		# 	# 得到的元素是原生元素,使用原生方法 操作
+		# 	for thisiframe in framelist:
+		# 		# print(thisiframe)
+		# 		# print(thisiframe.get_attribute('id'))
+		# 		iframeid=thisiframe.get_attribute('id')
+		# 		iframeclass=thisiframe.get_attribute('class')
+		# 		# iframestyle=thisiframe.get_attribute('style')
+
+
+		# 		print(iframeid)
+		# 		print(iframeclass)
+
+		# 		# if u'none' in iframestyle:
+		# 		# 	pass
+		# 		# 	iframelen=iframelen-1
+				
+
+		# 		# print(iframeid=='')
+		# 		if textclassfind in iframeid:
+		# 			iframeeditor=thisiframe
+		# 			print('ext in this iframe')
+		# 			break
+
+		# 		if iframeeditor==None and (textclassfind in iframeclass):
+		# 			iframeeditor=thisiframe
+		# 			print('ext in this iframe')
+		# 			break
+
+		# 		if iframeeditor==None and (textclasshidden in iframeclass  or textclasshidden in iframeid):
+		# 			iframelen-=1
+		# 			print('hidden iframe')
+		# 			break
+				
+
+
+		# 	# print(iframeeditor)
+		# 	if iframelen>0:
+
+		# 		if iframeeditor==None:
+		# 			# iframeeditor=framelist[0]
+		# 			iframeeditor='FreeTextBox1_editor'
+
+		# 		# iframeid=iframeeditor.get_attribute('id')
+		# 		# print('iframeid')
+		# 		# print(iframeid)
+		# 		print(iframeeditor)
+		# 		# browser.switch_to.frame(iframeid) #'FreeTextBox1_editor'
+		# 		self.browser.browser.switch_to.frame(iframeeditor) #'FreeTextBox1_editor'
+		# 		self.browser.browser.find_element_by_tag_name('body').send_keys(message.decode('utf-8'))
+
+		# 		if istest:
+		# 			pass
+		# 			print('test submit')
+		# 		else:
+		# 			self.browser.browser.find_element_by_tag_name('body').send_keys(Keys.ENTER)
+		# 	else:
+
+		# 		# actelem=browser.switch_to.active_element
+		# 		# actelem.click()
+		# 		# time.sleep(0.2)
+		# 		# actelem.click()
+		# 		# actelem.send_keys(message.decode('utf-8'))
+		# 		# actelem.click()
+		# 		# if istest:
+		# 		# 	pass
+		# 		# 	print('test submit')
+		# 		# else:			
+		# 		# 	actelem.send_keys(Keys.ENTER)
+
+
+		# 		edlist=self.browser.browser.find_elements_by_css_selector('#ksEditInstance')
+
+		# 		if len(edlist)>0:
+
+		# 			self.browser.browser.find_element_by_css_selector('#ksEditInstance').send_keys(message.decode('utf-8'))
+		# 			time.sleep(1)
+		# 			self.browser.browser.find_element_by_css_selector('#ksEditInstance').send_keys(Keys.ENTER)
+		# 			pass
+		# 		else:
+
+		# 			# actelem=browser.switch_to.active_element
+		# 			# actelem.click()
+		# 			# time.sleep(0.2)
+		# 			# # actelem.click()
+		# 			# actelem.send_keys(message.decode('utf-8'))
+		# 			# actelem.click()
+		# 			# if istest:
+		# 			# 	pass
+		# 			# 	print('test submit')
+		# 			# else:			
+		# 			# 	actelem.send_keys(Keys.ENTER)
+
+
+
+		# 			print('FreeTextBox1_editor')
+
+
+		# 			iframeeditor='FreeTextBox1_editor'
+		# 			self.browser.browser.switch_to.frame(iframeeditor)
+		# 			self.browser.browser.find_element_by_tag_name('body').send_keys(message.decode('utf-8'))
+		# 			# browser.find_element_by_tag_name('body').send_keys(Keys.ENTER)
+
+
+		# 			time.sleep(1)
+		# 			# browser.find_element_by_tag_name('body').send_keys(Keys.ENTER)
+		# 			pass
+
+
+		# except Exception, e:
+		# 	# browser.quit()
+		# 	# raise e
+		# 	#出错就要跳过，不然卡在一个url_id上
+		# 	# count+=1
+		# 	print(str(e))
+
+	time.sleep(0.5)
+	sendtry(botchrome,message)
+	# if isayto[name]==msgstring:
+	# 	# logging.info('i already said this before')
+	# 	return 'i already said this before'
+	# # 保存这一次发送的消息
+	# isayto[name]=msgstring
+
+	# if haveyousaidhello and '你好' in msgstring:
+	# 	return 'i have already said hello'
+	
+	# #已经说过你好了
+	# if '你好' in msgstring:
+	# 	haveyousaidhello=1
+	
+
+	#保存文本到数据库
+	# urlprefix='http://liliniao.com.cn/hospital/index.php?m=Api&c=user&a=talklog'
+	# urll =urlprefix+'&urole='+urllib.quote('病人'.encode('utf8'))+'&usay='+urllib.quote(msgstring.encode('utf8'))+'&chatid='+str(userid)+'-'+str(fname)+'&userid='+str(userid)
+	# reqq = urllib2.Request(urll)
+	# res_dataa = urllib2.urlopen(reqq)
+	# ress = res_dataa.read()
+	# self.sendtry()
