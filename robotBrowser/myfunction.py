@@ -5,6 +5,7 @@ import mymodel
 import time
 from selenium.webdriver.common.keys import Keys	
 from selenium.webdriver.common.action_chains import ActionChains
+import random
 
 
 def getmessage(msg_extractor):
@@ -14,6 +15,7 @@ def getmessage(msg_extractor):
 
 
 def send(botchrome,message,which='zoosoft'):
+	time.sleep(2)
 	if which=='zoosoft':
 		send_zoosoft(botchrome,message)
 	elif which=='kuaishangtong':
@@ -246,6 +248,15 @@ def send_zoosoft(botchrome,message):
 	# 	pass
 
 
+'''
+window.BcpSdk.getData()
+bcpsdk_send
+bcpsdk_start
+$('.imlp-component-typebox-send-btn').click()
+$('.pc-imlp-component-typebox').click()
+$(".pc-imlp-component-typebox .pc-imlp-component-typebox-container .imlp-component-typebox-input").focus()
+$('.pc-imlp-component-typebox-send--disable')
+'''
 
 def send_baidu(botchrome,message):
 
@@ -260,12 +271,7 @@ def send_baidu(botchrome,message):
 		# 	print('发送失败')
 		# 	print(str(e))
 		# time.sleep(1)
-		# try:
-		# 	set_wyswyg_js = 'onlineChatIns.sendMsg();'
-		# 	botchrome.javascript(set_wyswyg_js)
-		# except Exception as e:
-		# 	print('发送失败')
-		# 	print(str(e))
+		
 
 		#
 
@@ -278,23 +284,42 @@ def send_baidu(botchrome,message):
 			
 			
 		except Exception as e:
-			raise e
+			# raise e
 			pass
+		time.sleep(1)
+		set_wyswyg_js = 'var keyboardEvent = new KeyboardEvent("keypress", {bubbles:true}); Object.defineProperty(keyboardEvent, "charCode", {get:function(){return this.charCodeVal;}}); keyboardEvent.charCodeVal = 65; document.getElementsByClassName("imlp-component-typebox-input")[0].dispatchEvent(keyboardEvent);'
+		botchrome.javascript(set_wyswyg_js)
+
+		time.sleep(0.3)
+		set_wyswyg_js = 'document.getElementsByClassName("imlp-component-typebox-input")[0].innerText="%s";' %(message)
+		botchrome.javascript(set_wyswyg_js)
+
+		# time.sleep(1)
+
 		try:
 			inputiframe.clear()
 		except Exception as e:
 			# raise e
 			pass
+		time.sleep(0.3)
 		try:
-			inputiframe.send_keys(message)
+			# inputiframe.send_keys('nihao')
+			for tt in message:
+				inputiframe.send_keys(tt)
+				time.sleep(0.2)
+			# inputiframe.send_keys(message)
 		except Exception as e:
 			# raise e
 			pass
 		try:
-			botchrome.sendkey(Keys.ENTER)
+			time.sleep(2)
+			inputiframe.send_keys(Keys.ENTER)
 		except Exception as e:
 			print('发送失败')
 			print(str(e))
+
+		# while 1:
+		# 	botchrome.trytofind_byhand('.pc-imlp-component-typebox-send--disable')
 		
 
 	time.sleep(0.5)
@@ -509,3 +534,14 @@ def send_kuaishangtong(botchrome,message):
 	# res_dataa = urllib2.urlopen(reqq)
 	# ress = res_dataa.read()
 	# self.sendtry()
+
+
+
+def genewechatid():
+  e_userName=[]
+  usableName_char ="1234567890abcdefghijklmnopqrstuvwxyz-_1234567890"
+  wchatlen=random.choice([5,6,7,8,9,10])
+  for i in range(wchatlen):  
+      e_userName.append(random.choice(usableName_char))
+  userName = ''.join(e_userName)
+  return userName

@@ -153,14 +153,14 @@ def get_random_intent_respone(bingli,replyintent):
 
 class robot(object):
     """docstring for robot"""
-    def __init__(self,name,intentonly=False):
+    def __init__(self,role,intentonly=False):
         super(robot, self).__init__()
         # self.arg = arg
         # 构建url
         # 科室
         # %E4%BD%A0%E5%A5%BD&keshi=xinggongnengzhangai
         # self.keshi=keshi
-        self.name = name
+        self.role = role
         self.intentonly = intentonly
     
     def load(self,configfile):
@@ -350,7 +350,7 @@ class robot(object):
         robotintent=self.random_user_intent(replyintent)
         singleone_bingli_dict=self.random_users_bingli(keshiname,robotintent)
         if singleone_bingli_dict !=None:
-            print('病例中可以回复的意图:{}'.format(robotintent))
+            # print('病例中可以回复的意图:{}'.format(robotintent))
             # print('新病例中的该意图文本uwordslist')
             uwordslist=singleone_bingli_dict.get(robotintent)
         else:
@@ -380,7 +380,7 @@ class robot(object):
             # print(self.bingli_foreveryone.keys())
             random.shuffle(self.bingli_foreveryone[robotintent])    
             random_uwords=self.bingli_foreveryone[robotintent][0]
-            print('病例没找到，随机选意图：{}，文本：{}'.format(robotintent,random_uwords))
+            # print('病例没找到，随机选意图：{}，文本：{}'.format(robotintent,random_uwords))
         
       
 
@@ -416,7 +416,7 @@ class robot(object):
             random.shuffle(sayhello)   
             robotwords = sayhello[0] 
 
-        print('最终敲定意图：{}，文本：{}'.format(robotintent,robotwords))
+        print('\n 对方意图分析为：【{}】,我方{}的意图敲定为：【{}】，文本：{}\n'.format(otherintent,self.role,robotintent,robotwords))
         # 病人说的||医生意图||病人意图
         # return random.choice(i['responses'])+"||"+i['tag']
         return robotwords+"||"+otherintent+"||"+robotintent

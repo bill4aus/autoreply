@@ -526,6 +526,7 @@ class msgextractor_for_baidu(object):
 		# 判断聊天长度
 		print("len(self.sayarray)")
 		print(len(self.sayarray))
+		print(self.sayarray)
 		if len(self.sayarray)<=0:
 			pass
 		else:

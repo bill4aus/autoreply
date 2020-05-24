@@ -40,7 +40,7 @@ roleList = ['doctor','patient']
 for role_ in roleList:
     rbt = robot(role_,intentonly=False)
     rbt.load(role_)
-    robotdict[rbt.name] = rbt
+    robotdict[rbt.role] = rbt
 
 
 
@@ -75,7 +75,7 @@ def home():
 
     try:
         myrobot = robotdict[role]
-        answer=myrobot.response(question,keshiname=keshiname,show_details=True)
+        answer=myrobot.response(question,keshiname=keshiname,show_details=False)
     except Exception as e:
         raise e
         print(str(e))

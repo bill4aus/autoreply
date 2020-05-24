@@ -5,6 +5,7 @@ import json
 import myfunction
 import mymodel
 import time
+import random
 
 # def faceButton(startx,starty):
 # 	face_dict = {
@@ -24,14 +25,21 @@ import time
 refferurl = "https://www.baidu.com/s?ie=utf-8&f=3&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E7%94%B7%E7%A7%91&fenlei=256&oq=%25E7%2594%25B7%25E7%25A7%2591&rsv_pq=9c21b5200003eca7&rsv_t=a9517qIjZoZkvrDBI0xxeCTZY7yTzt2GO%2B88TGGGDOqPvnRbFInVHHpXEq0&rqlang=cn&rsv_enter=0&rsv_dl=ts_0&rsv_btype=t&prefixsug=%25E7%2594%25B7%25E7%25A7%2591&rsp=0&rsv_sug=1"
 
 
-botchrome = browserBot.chrome()
+# botchrome = browserBot.chrome()
+botchrome = browserBot.firefox()
 # url="http://kqi.zoossoft.com/LR/freetel.aspx?siteid=KQI10880110&oname=%e5%80%bc%e7%8f%ad-%e8%ae%b8%e5%8a%a9%e7%90%86"
 # url="http://kefu8.kuaishang.com.cn/bs/im/33908/29881/753511/sText_%E4%BC%98%E5%8C%96%E7%82%B9%E5%87%BB.htm"
-url="https://ada.baidu.com/site/qianhu.wejianzhan.com/xyl?imid=8aa44b4ceda14518603c8535b1de40a6&utm_source=baidu_wc3&utm_medium=cpc&utm_term=%E7%94%B7%E7%A7%91%E5%8C%BB%E9%99%A2&utm_content=%E7%94%B7%E7%A7%91&utm_campaign=A_B02_%E7%94%B7%E7%A7%91_%E5%8C%BB%E9%99%A2_%E5%AF%B9%E8%AF%9D%5B-nk%5D&key=nankeyiyuan&e_adposition=cl4&e_keywordid=165598555817&bd_vid=nH6sPHcLPWfYnWR3Pj0kn1TYrjwxnWcdg1wxnH0s#back1590229671057"
-	
+# url="https://ada.baidu.com/site/qianhu.wejianzhan.com/xyl?imid=8aa44b4ceda14518603c8535b1de40a6&utm_source=baidu_wc3&utm_medium=cpc&utm_term=%E7%94%B7%E7%A7%91%E5%8C%BB%E9%99%A2&utm_content=%E7%94%B7%E7%A7%91&utm_campaign=A_B02_%E7%94%B7%E7%A7%91_%E5%8C%BB%E9%99%A2_%E5%AF%B9%E8%AF%9D%5B-nk%5D&key=nankeyiyuan&e_adposition=cl4&e_keywordid=165598555817&bd_vid=nH6sPHcLPWfYnWR3Pj0kn1TYrjwxnWcdg1wxnH0s#back1590229671057"
+# url = "https://ada.baidu.com/site/120czxh.com/xyl?imid=e9540f5f450dcf8520d795f4903fca54#back1590314513287"
+# url="https://ada.baidu.com/site/88308006.com/xyl?imid=5f7b6feec59f8e155675b82a253975b8&zh=NAAAAABP&bz=hyc&jh=nkyy&k=148122326017&&bd_vid=nHDzPHcdn1TkPj61rHRYrHnsn1KxnWcdg17xnH0s#back1590315603493"
+url="https://ada.baidu.com/site/120hztjyy.com/xyl?imid=37eda5f886ea77c6f772251d0e6f8d8b#back1590315956526"
+# url="https://ada.baidu.com/site/120czxh.com/xyl?imid=e9540f5f450dcf8520d795f4903fca54#back1590316919481"
+# url="https://ada.baidu.com/site/shch120.net/xyl?imid=4998e7e3acdfa4787b3f53f59760c2d7&bd21pc-N28-004-01571&bd_vid=nHf3PjbzrHfdrjf3PWRznWcdnjwxnWcLg17xnH0s&renqun_youhua=716503#back1590318157388"
+# url="https://ada.baidu.com/site/cq-nk.cn/xyl?imid=29b4c335ce287ee072a7e9bfa5b96d63#back1590318396077"
+# url="http://lbs.zoosnet.net/LR/Chatpre.aspx?id=LBS31671888&cid=1524380007409445977319&lng=cn&sid=1524380007409445977319&p=http%3A//hzaboluo-mtbd.cn/pc/yypp/%3Fbd-hzabl06%3DCC-%28pp%29pp-795/%3Futm_source%3D%25E6%259D%25AD%25E5%25B7%259E%25E9%2598%25BF%25E6%25B3%25A2%25E7%25BD%259706%26utm_medium%3D%25E7%25AB%259E%25E4%25BB%25B7%26utm_term%3D%25E6%259D%25AD%25E5%25B7%259E%25E9%2598%25BF%25E6%25B3%25A2%25E7%25BD%2597%25E7%2594%25B7%25E7%25A7%2591%26utm_content%3D002%252D%25E6%259D%25AD%25E5%25B7%259E%25E9%2598%25BF%25E6%25B3%25A2%25E7%25BD%2597%26utm_campaign%3DCC%252D%25EF%25BC%2588pp%25EF%25BC%2589%25E5%2593%2581%25E7%2589%258C&rf1=https%3A//www.baidu&rf2=.com/s%3Fie%3Dutf-8%26f%3D8%26rsv_bp%3D0%26rsv_idx%3D1%26tn%3Dbaidu%26wd%3D%25E6%259D%25AD%25E5%25B7%259E%2520%25E7%2594%25B7%25E7%25A7%2591%26rsv_pq%3Df13bbd920003e228%26rsv_t%3Dc8ffPqs0X%252F%252FPFur077XE3JFvGlU42pmIXq3i64qF6nh1SR8tdGYT%252BIoXlcw%26rqlang%3Dcn%26rsv_enter%3D1%26rsv_sug3%3D18%26rsv_sug1%3D9%26rsv_sug7%3D100%26rsv_sug2%3D0%26inputT%3D6033%26rsv_sug4%3D154656&e=%25u6765%25u81EA%25u9996%25u9875%25u81EA%25u52A8%25u9080%25u8BF7%25u7684%25u5BF9%25u8BDD&msg=&d=1524380017081"
 # 登陆
 # botchrome.open(url,waittime=1)
-botchrome.openwithsource(url,refferurl,waittime=15)
+botchrome.openwithsource(url,refferurl,waittime=8)
 botchrome.save_cookie('./cookie.broswer')
 
 # corpus = bot.dataload_by_line('./corpus.txt')
@@ -60,11 +68,18 @@ laragetime=0
 # 机器人
 keshi = 'xinggongnengzhangai'
 mybot=mymodel.robot(keshi,"userid")
-# wechatid_for_play=genewechatid()
+wechatid_for_play=myfunction.genewechatid()
 
 
-# 'kuaishangtong'/'zoosoft' 目前两种
-talktype = 'baidu'
+# 'kuaishangtong'/'zoosoft' /baidu 目前两种
+
+if 'baidu' in url:
+	talktype = 'baidu'
+elif 'zoossoft' in url:
+	talktype = 'zoosoft'
+elif 'kuaishang' in url:
+	talktype = 'kuaishangtong'
+
 
 if talktype=='zoosoft':
 	msg_extractor=mymodel.msgextractor_for_zoosoft(botchrome)
@@ -74,6 +89,8 @@ elif talktype=='baidu':
 	msg_extractor=mymodel.msgextractor_for_baidu(botchrome)
 	
 
+
+# myfunction.send(botchrome,'iamtosaystring',which=talktype)
 
 
 #while 循环
@@ -188,6 +205,7 @@ while True:
 				slist=['好的','行','OK']
 				myfunction.send(botchrome,random.choice(slist))
 				botchrome.quit()
+
 
 			myfunction.send(botchrome,iamtosaystring,which=talktype)
 
