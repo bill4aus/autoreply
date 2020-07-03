@@ -139,3 +139,6 @@ api/patient/modelconfigsave/
 conversation/corpus/
 conversation/bingli/
 chromedriver.exe
+source/
+*.broswer
+robotBrowser/geckodriver.exe
